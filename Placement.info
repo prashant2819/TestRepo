@@ -1,0 +1,15 @@
+﻿<Placement>
+  <Place Parts_ProjectPart_Edit="Content:after"/>
+  <Place Parts_ProjectPart="Content:1"/>
+  <Place Parts_TaskPart_Edit="Content:after"/>
+  <Match DisplayType="SummaryAdmin">
+    <Place Parts_ProjectPart_ProjectPart_SummaryAdmin="Actions:10"/>
+    <Place Parts_ProjectPart="-"/>
+  </Match>
+  <Match ContentType="Task">
+    <Place Parts_Contents_Publish_SummaryAdmin ="-"/>
+    <!--<Match DisplayType="SummaryAdmin">
+      <Place Parts_Task_Task_SummaryAdmin="Actions:10"/>
+    </Match>-->
+   </Match>
+</Placement>

@@ -1,0 +1,104 @@
+@model TaskAssignment
+@using Orchard.ProjectManagement.Models;
+@{
+    Script.Require("jQuery").AtHead();
+    Script.Include("knockout-2.2.1.js").AtHead();
+    Script.Include("knockout.validation.js").AtHead();
+    Script.Include("knockout.mapping.js").AtHead();
+    Script.Include("jquery.livequery.min.js");
+}
+<header>
+<h2>Add Assignment</h2>
+</header>
+<div id="assignmentDiv">
+    <table id="assign">
+        <tr>
+            
+      <th style="width:100px;">Resource</th>
+      <th style="width:70px;">Efforts</th>
+      <th style="width:70px;"/>
+    
+        </tr>
+        <tbody data-bind="foreach:lines"
+        <tr>
+            <td>
+                <select data-bind="options:jData.Users ,optionsText: 'Name',optionValue:'Id' ,value:Resource, optionsCaption: 'Select...'"> </select>
+            </td>
+
+            <td>
+                <input  data-bind="value:Efforts" />
+            </td>
+            
+            <td>
+                <a href="#" data-bind="click:$root.removeLine">Remove</a>
+            </td>
+        </tr>
+    </table>
+
+    <br />
+    <div>
+        <button data-bind="click:addLine" id="AddAssignment">Add</button>
+        <button id="Save">Save</button>
+    </div>
+</div>
+@using(Script.Head())
+{
+<script type="text/javascript">
+    
+    // var data = "@Model.jsonData";
+        var strData = "<option> Select User</option><option> Select User</option>";
+        var data = "@Model.jsonData";
+        //var zdata = JSON.stringify(data.toString());
+        var ydata = data.replace(/&quot;/g, '"');
+        var xdata = ydata.replace(/""/g, '');
+        var jData = $.parseJSON(xdata);
+        var count = jData.Users.length;
+        for (i = 0; i < count; i++) {
+            strData = strData + "<option value=" + jData.Users[i].id + ">" + jData.Users[i].Name + "</option>";
+        }
+     
+</script>
+}
+
+<script>
+    //var Assingment = function () {
+    //    var self = this;
+    //    self.Resource = ko.observable();
+    //    self.Efforts = ko.observable();
+    //    //self.user = ko.observable(strData);
+        
+    //};
+
+    var AssingmentModel = function (assignments) {
+        // Stores an array of lines, and from these, can work out the grandTotal
+        var self = this;
+        self.lines = ko.observableArray(assignments); // Put one line in by default
+        
+        // Operations
+        self.addLine = function () { self.lines.push({ Resource: "1", Efforts: "2" });};
+        self.removeLine = function (line) { self.lines.remove(line) };
+        //self.save = function () {
+        //    var dataToSave = $.map(self.lines(), function (line) {
+        //        return line.product() ? {
+        //            productName: line.product().name,
+        //            quantity: line.quantity()
+        //        } : undefined
+        //    });
+        //    alert("Could now send this to server: " + JSON.stringify(dataToSave));
+        //};
+    };
+
+    var viewModel = new AssingmentModel([
+    { Resource: "admin", Efforts: "39.95" },
+    { Resource: "admin", Efforts: "120.00" }
+    ]);
+    ko.applyBindings(viewModel);
+</script>
+<script>
+    //$("#AddAssignment").click(function () {
+    //    $("#assign").append("<tr><td><select>" + strData + "</select></td><td><input type='text'></input></td><td><button value='Remove'></button></td></tr>");
+    //});
+</script>
+
+
+

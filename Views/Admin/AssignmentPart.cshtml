@@ -1,0 +1,68 @@
+@model Orchard.ProjectManagement.Models.TaskAssignment
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+@{
+    Script.Include("knockout-2.2.1.js").AtHead();
+    Script.Include("knockout.validation.js").AtHead(); 
+}
+@using (Html.BeginFormAntiForgeryPost())
+{
+    @Html.Hidden("users",@Model.Users.Select(s => new SelectListItem
+                    {
+                        Text = s.UserName,
+                        Value = s.Id.ToString()
+                    }));
+    <div>
+        <input type="button" id="addnewAssignment" value="Add New Assignment" />
+    </div> 
+    <div id="AssignmentDiv">
+        <table>
+            <tr>
+                <th>ResourceId</th>
+                <th>RoleId</th>
+                <th>Effort</th>
+            </tr>
+            <tr>
+                <td>@Html.DropDownListFor(model => model.ResourceId, Model.Users.Select(s => new SelectListItem
+                    {
+                        Text = s.UserName,
+                        Value = s.Id.ToString()
+                    }),
+                       "--Select a Resource--")</td>
+                <td>
+                    <input type="text" /></td>
+                <td>
+                    <input type="text" /></td>
+
+            </tr>
+        </table>
+    </div>
+    <div>
+        <br />
+        <br />
+        <fieldset>
+            <input type="submit" id="submitButton" value="Save" />
+            <input type="submit" id="canceltButton" value="Cancel" />
+
+        </fieldset>
+    </div>
+    
+    <div data-bind="template: { name: 'person-template', foreach: people }"></div>   
+}
+
+<script>
+    $("#addnewAssignment").click(function () {
+        var user = $("[name='users']").val();
+        var newRow = "<tr> <td> <select type='select' name='resourceId'/></td><td><input type='text' name='roleId'/></td><td><input type='text'/></td>"
+        $("#AssignmentDiv").append(newRow);
+        var opt = "<option>"
+        for (var res in user)
+        {
+            opt += res.UserName;
+        }
+        opt += "</option>"
+        
+        });
+    
+</script>

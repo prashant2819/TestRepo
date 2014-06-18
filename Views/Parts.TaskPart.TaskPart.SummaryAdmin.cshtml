@@ -1,0 +1,9 @@
+﻿@using Orchard.ProjectManagement.Models;
+@using Orchard.ContentManagement;
+@using Orchard.Utility.Extensions;
+@{
+    ContentItem contentItem = Model.ContentItem;
+    ProjectPart project = (ProjectPart)contentItem.Get(typeof(ProjectPart));
+}
+<a href='@Url.Action("ListTask","TaskAdmin",new {Id=project.Id,area="Orchard.ProjectManagement"})'title="@T("List Task")">@T("List Task")</a>@T(" | ")
+<a href='@Url.Action("Create","TaskAdmin",new {Id=project.Id,area="Orchard.ProjectManagement"})'title="@T("New Task")">@T("New Task")</a>@T(" | ")

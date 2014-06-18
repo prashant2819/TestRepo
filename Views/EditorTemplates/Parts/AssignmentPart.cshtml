@@ -1,0 +1,61 @@
+@{
+    Script.Include("knockout-2.2.1.js").AtHead();
+    Script.Include("knockout.validation.js").AtHead(); 
+}
+<div class='Assignment'>
+
+    <table width='100%'>
+        <thead>
+            <tr>
+                <th width='25%'>Resource</th>
+                <th width='25%'>Role</th>
+                <th width='15%'>Efforts</th>
+                <th width='10%'></th>
+            </tr>
+        </thead>
+        <tbody data-bind='foreach: assignments'>
+            <tr>
+                <td>
+                    <select data-bind='options: Users, optionsText: "Users.Username", optionsCaption: "Select...", value: ResourceID'></select>
+                </td>
+                <td >
+                    <select data-bind='options: products, optionsText: "name", optionsCaption: "Select...", value: RoleId'></select>
+                </td>
+                <td >
+                    <input data-bind='value: Effort'/>
+                    <td>
+                        <a href='#' data-bind='click: $parent.removeLine'>Remove</a>
+                    </td>
+            </tr>
+        </tbody>
+    </table>
+
+    </p>
+    <button data-bind='click: addLine'>Add Assignment</button>
+    <button data-bind='click: save'>Save</button>
+
+</div>
+@using (Script.Head())
+{
+    //var userList =
+}
+<script>
+    var AssignmentView = function () {
+        self = this;
+        self.ResourceID = ko.observable();
+        self.RoleId = ko.observable();
+        self.Effort = ko.observable();
+    };
+
+    var AssignmentViewModel = function () {
+        self = this;
+        self.assignments = ko.observableArray([new AssignmentView()]);
+        self.Users = ko.observable();
+
+        self.addassignment = function () { self.lines.push(new AssignmentView()) };
+        self.removeassignment = function (assignment) { self.assignments.remove(assignment) };
+    };
+
+    ko.applyBindings(new AssignmentViewModel());
+</script>
+

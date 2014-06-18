@@ -1,0 +1,81 @@
+@model Orchard.ProjectManagement.Models.ProjectPart
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+@{
+    Script.Require("jquery");
+    Script.Require("jQueryUI_Core");
+    Script.Require("jQueryUI_Widget").AtFoot();
+    Style.Require("jQueryUI_Orchard").AtHead();
+    Script.Include("knockout-2.2.1.js").AtHead();
+    Script.Include("knockout.validation.js"); 
+}
+
+@Html.Hidden("taskId",Model.Id)
+
+<fieldset>
+    <label for="TaskCode">Project Code</label>
+    @Html.TextBoxFor(m => m.TaskCode)
+
+   <label for="Status">Project Status</label>
+    @Html.DropDownListFor(m => m.Status, new SelectList(new List<Object>
+                  {
+                       new { value = "STATUS_ACTIVE" , text = "Active"  },
+                       new { value = "STATUS_SUSPENDED" , text = "Suspended" },
+                       new { value = "STATUS_FAILED", text = "Failed"},
+                       new { value = "STATUS_COMPLETED" , text = "Completed"}
+                  },
+                  "value", "text"), "--Select--", new { id = "StatusList" })
+   
+    <table>
+        <tr>
+            <td>
+                <label for="ProjStartDate">Project Start Date</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.TextBoxFor(m => m.ProjStartDate, new { @class = "date" })
+            </td>
+            <td>
+                @Html.CheckBoxFor(m => m.StartIsMilestone, new { @title = "StartIsMilestone" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="ProjEndtDate">Project End Date</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.TextBoxFor(m => m.ProjEndDate, new { @class = "date" })
+            </td>
+            <td>
+                @Html.CheckBoxFor(m => m.EndIsMilestone, new { @title = "EndIsMilestone" })
+            </td>
+        </tr>
+    </table>
+
+     <label for="Duration">Duration</label>
+    @Html.TextBoxFor(m => m.Duration, new { id = "duration", @title = "Duration in number of days" })
+
+    <label for="Progress">Progress</label>
+    @Html.TextBoxFor(m => m.Progress, new { id = "progress", @title = "Progress in %age" })
+
+
+
+</fieldset>
+
+
+
+@using (Script.Foot())
+{
+    @Display.DatePickerLocalization() 
+    @Display.TimePickerLocalization() 
+   
+    <script type="text/javascript">
+        $(function () {
+            $("#@Html.FieldIdFor(m => Model.ProjStartDate)").datepicker({ showAnim: "" });
+            $("#@Html.FieldIdFor(m => Model.ProjEndDate)").datepicker({ showAnim: "" });
+        })
+    </script>
+}

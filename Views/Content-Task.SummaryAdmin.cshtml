@@ -1,0 +1,45 @@
+﻿@using Orchard.ContentManagement;
+@using Orchard.Core.Contents
+@using Orchard.Utility.Extensions;
+@using Orchard.ProjectManagement.Models;
+@{
+    Script.Require("ShapesBase");
+    ContentItem contentItem = Model.ContentItem;
+    TaskPart task = (TaskPart)contentItem.Get(typeof(TaskPart));
+    var returnUrl = ViewContext.RequestContext.HttpContext.Request.ToUrlString();
+}
+<div class="summary" itemscope="itemscope" itemid="@contentItem.Id" itemtype="http://orchardproject.net/data/ContentItem">
+    <div class="properties">
+        <input type="checkbox" value="@contentItem.Id" name="itemIds"/>
+        <h3>@Html.ItemAdminLink(contentItem)</h3> - <div class="contentType">@contentItem.TypeDefinition.DisplayName</div>
+        @if (Model.Header != null) {
+        <div class="header">@Display(Model.Header)</div>
+        }
+        @if (Model.Meta != null) {
+        <div class="metadata">@Display(Model.Meta)</div>
+        }
+    </div>
+    <div class="related">
+        @Display(Model.Actions)
+        
+            @Html.Link(T("List SubTask").Text,Url.Action("ListTask","TaskAdmin",new{Id =task.Id}))
+            @T(" | ")
+            @Html.Link(T("Add SubTask").Text,Url.Action("Create","TaskAdmin",new{Id =task.Id}))
+            @T(" | ")
+            @Html.Link(T("Add Assignment").Text,Url.Action("AddAssignment","TaskAdmin",new{taskId =task.Id}))
+            @T(" | ")
+
+          
+       @if (Authorizer.Authorize(Permissions.EditContent, contentItem)) {
+            @Html.Link(T("Edit").Text,Url.Action("Edit","TaskAdmin",new{taskId =task.Id}))
+            @T(" | ")
+        }
+        @if (Authorizer.Authorize(Permissions.EditContent, contentItem))
+        {
+             @Html.Link(T("Delete").Text,Url.Action("Remove","TaskAdmin",new{taskid =task.Id}))
+        }
+    </div>
+    @if (Model.Content != null) {
+    <div class="primary">@Display(Model.Content)</div>
+    }
+</div>
